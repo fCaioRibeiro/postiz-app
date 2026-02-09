@@ -11,6 +11,8 @@ import { InstagramDto } from '@gitroom/nestjs-libraries/dtos/posts/providers-set
 import { InstagramCollaboratorsTags } from '@gitroom/frontend/components/new-launch/providers/instagram/instagram.tags';
 import { useT } from '@gitroom/react/translation/get.transation.service.client';
 import { InstagramPreview } from '@gitroom/frontend/components/new-launch/providers/instagram/instagram.preview';
+import { MediaComponent } from '@gitroom/frontend/components/media/media.component';
+
 const postType = [
   {
     value: 'post',
@@ -44,12 +46,24 @@ const InstagramCollaborators: FC<{
       </Select>
 
       {postCurrentType !== 'story' && (
-        <InstagramCollaboratorsTags
-          label="Collaborators (max 3) - accounts can't be private"
-          {...register('collaborators', {
-            value: [],
-          })}
-        />
+        <>
+          <InstagramCollaboratorsTags
+            label="Collaborators (max 3) - accounts can't be private"
+            {...register('collaborators', {
+              value: [],
+            })}
+          />
+          <div className="mt-[20px]">
+            <MediaComponent
+              type="image"
+              width={1080}
+              height={1920}
+              label="Reel Cover (optional)"
+              description="Custom cover image for your Reel (recommended 9:16)"
+              {...register('cover_url')}
+            />
+          </div>
+        </>
       )}
     </>
   );
