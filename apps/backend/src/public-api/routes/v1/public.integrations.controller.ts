@@ -20,6 +20,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadFactory } from '@gitroom/nestjs-libraries/upload/upload.factory';
 import { MediaService } from '@gitroom/nestjs-libraries/database/prisma/media/media.service';
 import { GetPostsDto } from '@gitroom/nestjs-libraries/dtos/posts/get.posts.dto';
+import { GetPostsListDto } from '@gitroom/nestjs-libraries/dtos/posts/get.posts.list.dto';
 import {
   AuthorizationActions,
   Sections,
@@ -132,6 +133,25 @@ export class PublicIntegrationsController {
 
     console.log(JSON.stringify(body, null, 2));
     return this._postsService.createPost(org.id, body);
+  }
+
+  @Get('/posts/list')
+  async getPostsList(
+    @GetOrgFromRequest() org: Organization,
+    @Query() query: GetPostsListDto
+  ) {
+    Sentry.metrics.count("public_api-request", 1);
+    return this._postsService.getPostsList(org.id, query);
+  }
+
+  @Get('/posts/:id')
+  async getPostById(
+    @GetOrgFromRequest() org: Organization,
+    @Param('id') id: string
+  ) {
+    Sentry.metrics.count("public_api-request", 1);
+    const post = await this._postsService.getPost(org.id, id);
+    return post;
   }
 
   @Delete('/posts/:id')
