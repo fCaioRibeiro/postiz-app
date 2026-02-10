@@ -13,15 +13,6 @@ export class AnalyticsController {
     private _postsService: PostsService
   ) {}
 
-  @Get('/:integration')
-  async getIntegration(
-    @GetOrgFromRequest() org: Organization,
-    @Param('integration') integration: string,
-    @Query('date') date: string
-  ) {
-    return this._integrationService.checkAnalytics(org, integration, date);
-  }
-
   @Get('/post/:postId')
   async getPostAnalytics(
     @GetOrgFromRequest() org: Organization,
@@ -29,5 +20,14 @@ export class AnalyticsController {
     @Query('date') date: string
   ) {
     return this._postsService.checkPostAnalytics(org.id, postId, +date);
+  }
+
+  @Get('/:integration')
+  async getIntegration(
+    @GetOrgFromRequest() org: Organization,
+    @Param('integration') integration: string,
+    @Query('date') date: string
+  ) {
+    return this._integrationService.checkAnalytics(org, integration, date);
   }
 }
